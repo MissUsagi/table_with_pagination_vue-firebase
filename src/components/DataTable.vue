@@ -14,9 +14,8 @@
             <td>{{ row.start_date }}</td>
          </tr>
       </tbody>
-      <p @click="updateVisibleData()">{{ updateVisibleData }}</p>
    </table>
-   <pagination-component></pagination-component>
+   <pagination-component :current-Page="currentPage" :pages="pagesInTotal" @myEvent="changePage"></pagination-component>
    </div>
 </template>
 
@@ -28,8 +27,9 @@ import PaginationComponent from './PaginationComponent.vue';
    data(){
    return{
       pageSize: 3,
-      currentPage: 1,
-      visibleData: []
+      currentPage: 0,
+      visibleData: [],
+      pagesInTotal: null,
    }
   },
   mounted: function(){
@@ -37,7 +37,12 @@ import PaginationComponent from './PaginationComponent.vue';
   },
   methods: {
    updateVisibleData(){
-      console.log(this.visibleData = this.rows.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize))
+      this.pagesInTotal = Math.ceil(this.rows.length / this.pageSize);
+      this.visibleData = this.rows.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
+   },
+   changePage(page){
+      this.currentPage = page-1;
+      this.updateVisibleData();
    }
   }
   }

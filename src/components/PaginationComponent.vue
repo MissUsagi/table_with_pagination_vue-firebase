@@ -1,12 +1,21 @@
 <template>
    <ul>
       <li>[Previous]</li>
-      <li>[1]</li>
-      <li>[2]</li>
-      <li>[3]</li>
+      <li v-for="n in pages" :key="n" @click=goToPage(n)>[{{ n }}]</li>
       <li>[Next]</li>
    </ul>
 </template>
+
+<script>
+export default{
+   props: ['currentPage', 'pages'],
+   methods: {
+      goToPage(page){
+         this.$emit("myEvent", page)
+      }
+   }
+}
+</script>
 
 <style scoped>
 ul {
@@ -16,7 +25,8 @@ ul {
    flex-direction: row;
 }
 li {
+   font-size: 18px;
    list-style: none;
    padding: 0 5px;
 }
-</style>
+</style>2
