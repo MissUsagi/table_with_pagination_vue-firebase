@@ -10,7 +10,8 @@ export default {
   return {
     tableColumns: [{accessor: 'name', label: "Name"}, 
     {accessor: 'age', label: "Age"}, 
-    {accessor: 'is_Manager', label: "Manager"}, 
+    {accessor: 'is_Manager', label: "Manager",},
+    // format: value => (value ? '✔️' : '✖️') 
     {accessor: 'start_date', label: "Start Date"}],
     dataRows: [
   { id: 1, name: 'Liz Lemon', age: 36, is_manager: true, start_date: '02-28-1999' },
@@ -21,9 +22,12 @@ export default {
   { id: 6, name: 'Pete Hornberger', age: null, is_manager: true, start_date: '04-01-2000' },
   { id: 7, name: 'Frank Rossitano', age: 36, is_manager: false, start_date: null },
   { id: 8, name: null, age: null, is_manager: null, start_date: null },
+  { id: 9, name: 'Sam Smith', age: 28, is_manager: false, start_date: '04-11-2022' },
+  { id: 10, name: 'Jill Jones', age: 31, is_manager: true, start_date: '24-08-2017' },
+  { id: 11, name: 'Pete Doe', age: 35, is_manager: false, start_date: '12-03-2019' },
 ],
   }
-}
+},
 }
 </script>
 

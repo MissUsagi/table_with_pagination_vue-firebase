@@ -7,25 +7,39 @@
          </tr>
       </thead>
       <tbody>
-         <tr v-for="row in rows" :key="row.id">
+         <tr v-for="row in visibleData" :key="row.id">
             <td>{{ row.name }}</td>
             <td>{{ row.age }}</td>
-            <td>{{ row.is_manager }}</td>
+            <td >{{ row.is_manager }}</td>
             <td>{{ row.start_date }}</td>
          </tr>
       </tbody>
+      <p @click="updateVisibleData()">{{ updateVisibleData }}</p>
    </table>
+   <pagination-component></pagination-component>
    </div>
 </template>
 
 <script>
+import PaginationComponent from './PaginationComponent.vue';
   export default {
+   components: {PaginationComponent},
    props: ['columns', 'rows'],
-//    data(){
-//    return{
-//       filteredRows: this.rows,
-//    }
-//   },
+   data(){
+   return{
+      pageSize: 3,
+      currentPage: 1,
+      visibleData: []
+   }
+  },
+  mounted: function(){
+   this.updateVisibleData()
+  },
+  methods: {
+   updateVisibleData(){
+      console.log(this.visibleData = this.rows.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize))
+   }
+  }
   }
 
 </script>
@@ -35,7 +49,9 @@
 	margin-right:auto;
 	margin-left:auto;
 	display:flex;
+   flex-direction: column;
 	justify-content:center;
+   border: 1px solid #333;
 }
 table th {
   text-transform: uppercase;
