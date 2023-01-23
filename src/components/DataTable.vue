@@ -7,10 +7,13 @@
          </tr>
       </thead>
       <tbody>
+         <tr>
+            <td class="input-row"><input type="type" placeholder="Search Name" @input="searchName"><span @click="sortData">Sortuj</span></td>
+         </tr>
          <tr v-for="row in visibleData" :key="row.id">
             <td>{{ row.name }}</td>
             <td>{{ row.age }}</td>
-            <td >{{ row.is_manager }}</td>
+            <td><span>{{ row.is_manager ? '✔️' : '✖️' }}</span> {{ row.is_manager }}</td>
             <td>{{ row.start_date }}</td>
          </tr>
       </tbody>
@@ -39,11 +42,26 @@ import PaginationComponent from './PaginationComponent.vue';
    updateVisibleData(){
       this.pagesInTotal = Math.ceil(this.rows.length / this.pageSize);
       this.visibleData = this.rows.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
+      console.log(this.currentPage)
+   },
+   searchName(e){
+      const searchedPerson = e.target.value;
+      if(e.target.value){   
+         this.visibleData = this.rows.filter(person => {
+         if(person.name.toLowerCase().includes(searchedPerson.toLowerCase()))
+         return person
+      });}
+      else this.updateVisibleData();
    },
    changePage(page){
-      this.currentPage = page-1;
+      const pageIndex = page - 1;
+      this.currentPage = pageIndex;
       this.updateVisibleData();
-   }
+   },
+   // sortData(){
+   //    this.visibleData.sort((a,b) => b.id - a.id)
+   //    console.log(this.visibleData)
+   // }
   }
   }
 
@@ -78,4 +96,18 @@ table td:last-child {
 }
 table tbody tr:nth-child(2n) td {
   background: #D4D8F9;}
+
+  .input-row{
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+  }
+
+.input-row span{
+   font-weight: bold;
+   cursor: pointer;
+ }
+ .input-row input, span {
+   padding: 5px;
+ }
 </style>
