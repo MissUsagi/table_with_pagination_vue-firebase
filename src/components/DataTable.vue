@@ -8,7 +8,9 @@
       </thead>
       <tbody>
          <tr>
-            <td class="input-row"><input type="type" placeholder="Search Name" @input="searchName"><span @click="sortData">Sortuj</span></td>
+            <td class="input-row"><input type="type" placeholder="Search Name" @input="searchName($event)">
+               <!-- <span @click="sortData">Sortuj</span> -->
+            </td>
          </tr>
          <tr v-for="row in visibleData" :key="row.id">
             <td>{{ row.name }}</td>
@@ -18,7 +20,7 @@
          </tr>
       </tbody>
    </table>
-   <pagination-component :current-Page="currentPage" :pages="pagesInTotal" @myEvent="changePage"></pagination-component>
+   <pagination-component :current-Page="currentPage" :pages="pagesInTotal" @my-event="changePage"></pagination-component>
    </div>
 </template>
 
@@ -46,17 +48,20 @@ import PaginationComponent from './PaginationComponent.vue';
    },
    searchName(e){
       const searchedPerson = e.target.value;
+      console.log(searchedPerson)
       if(e.target.value){   
          this.visibleData = this.rows.filter(person => {
          if(person.name.toLowerCase().includes(searchedPerson.toLowerCase()))
          return person
       });}
       else this.updateVisibleData();
+
    },
+
    changePage(page){
-      const pageIndex = page - 1;
+      const pageIndex = page;
       this.currentPage = pageIndex;
-      this.updateVisibleData();
+      this.updateVisibleData(); 
    },
    // sortData(){
    //    this.visibleData.sort((a,b) => b.id - a.id)
