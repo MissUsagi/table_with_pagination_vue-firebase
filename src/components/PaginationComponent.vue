@@ -1,22 +1,44 @@
 <template>
    <ul>
-      <li>[Previous]</li>
-      <li v-for="page in pages" :key="page" @click=goToPage(page)>[{{ page }}]</li>
+      <li @click="goToPrevPage()">[Previous]</li>
+      <li v-for="(page, index) in pages" :key="page" @click="goToPage(index)" :class="{active: activePage === index}">[{{ page }}]</li>
       <li @click="goToNextPage()">[Next]</li>
    </ul>
 </template>
 
 <script>
+
 export default{
    props: ['currentPage', 'pages'],
+   emits: ['my-event'],
+   data(){
+      return {
+         activePage: this.currentPage, 
+      }
+   },
    methods: {
       goToPage(page){
-         this.$emit("myEvent", page)
-      },
+         this.activePage = page;
+         this.$emit("my-event", this.activePage);      
+         console.log("page " + page)
+         console.log("currentPage " + this.currentPage)
+         console.log("activePage " + this.activePage)
+    },
       goToNextPage(){
-         const nextPage = this.currentPage + 1;
-         console.log(nextPage)
-         this.$emit("myEvent", nextPage)
+         const nextPage = this.currentPage + 1; //current Page i active Page? ujednolicenie?
+         if(nextPage < this.pages){
+            this.$emit("my-event", nextPage);
+            this.activePage +=1;
+         }
+
+      },
+      goToPrevPage(){
+         const prevPage = this.currentPage - 1;
+         if(prevPage >= 0)
+         {
+            this.$emit("my-event", prevPage);
+            this.activePage -=1;
+         }
       }
    }
 }
@@ -40,5 +62,10 @@ li:hover {
    scale: 1.1;
 }
 
+.active {
+   font-weight: bold;
+   color: purple
+}
 
-</style>2
+</style>
+
