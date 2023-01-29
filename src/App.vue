@@ -1,5 +1,5 @@
 <template>
-<data-table :columns="tableColumns" :rows="filteredData"></data-table>
+<data-table :columns="tableColumns" :rows="filteredData" @sort-data="sortTable"></data-table>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ export default {
     // format: value => (value ? '✔️' : '✖️') 
     {accessor: 'start_date', label: "Start Date"}],
     dataRows: [
-  { id: 1, name: 'Liz Lemon', age: 36, is_manager: true, start_date: '02-28-1999' },
+  { id: 1, name: 'Liz Lemon', age: 36, is_manager: true, start_date: '02-11-1999' },
   { id: 2, name: 'Jack Donaghy', age: 40, is_manager: true, start_date: '03-05-1997' },
   { id: 3, name: 'Tracy Morgan', age: 39, is_manager: false, start_date: '07-12-2002' },
   { id: 4, name: 'Jenna Maroney', age: 40, is_manager: false, start_date: '02-28-1999' },
@@ -35,7 +35,7 @@ filteredData: []
 methods: {
   filterData(){
     return this.filteredData = this.dataRows.filter(row => {if(row.name) return row})
-  }
+  },
 },
 beforeMount: function(){
    this.filterData()
