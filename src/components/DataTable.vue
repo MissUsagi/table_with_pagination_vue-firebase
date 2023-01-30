@@ -3,14 +3,17 @@
       <table>
          <thead @click="filter">
             <tr>
-               <th v-for="column in columns" :key="column.accessor">{{ column.label }} <span
-                     @click="sortData">Sort</span></th>
+               <th v-for="label in tableLabels" :key="label.accessor">{{ label.label }} 
+                  <base-button mode="outline" @click="sortData(label.accessor)">Sort</base-button ></th>
             </tr>
          </thead>
          <tbody>
             <tr>
-               <td class="input-row"><input type="type" placeholder="Search Name" @input="searchName($event)">
-                  <!-- <span @click="sortData">Sortuj</span> -->
+               <td>
+                  <div class="search">
+                  <input type="type" placeholder="Search Name" v-model="searchInput" @input="searchName($event)">
+                  <base-button mode="basic" @click="clearInput()">Clear</base-button>
+               </div>
                </td>
             </tr>
             <tr v-for="row in visibleData" :key="row.id">
@@ -21,23 +24,27 @@
             </tr>
          </tbody>
       </table>
-      <pagination-component :current-Page="currentPage" :pages="pagesInTotal" @my-event="changePage"
+      <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="changePage"
          @table-size="updatePage"></pagination-component>
    </div>
 </template>
 
+
 <script>
+import BaseButton from './BaseButton.vue';
 import PaginationComponent from './PaginationComponent.vue';
 export default {
-   components: { PaginationComponent },
-   props: ['columns', 'rows'],
+   components: { PaginationComponent, BaseButton },
+   props: ['tableLabels', 'employees'],
    data() {
       return {
-         data: this.rows,
-         pageSize: 3,
-         currentPage: 0,
+         employeesArray: this.employees,
+         recordsPerPage: 3,
+         currentPageIndex: 0,
          visibleData: [],
          pagesInTotal: null,
+         sortAscending: true,
+         searchInput: ''
       }
    },
    mounted: function () {
@@ -45,64 +52,88 @@ export default {
    },
    methods: {
       updateVisibleData() {
-         this.pagesInTotal = Math.ceil(this.data.length / this.pageSize);
-         this.visibleData = this.data.slice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize)
-         console.log(this.currentPage)
+         this.pagesInTotal = Math.ceil(this.employeesArray.length / this.recordsPerPage);
+         this.visibleData = this.employeesArray.slice(this.currentPageIndex * this.recordsPerPage, (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage)
       },
+
       searchName(e) {
          const searchedPerson = e.target.value;
-         console.log(searchedPerson)
          if (e.target.value) {
-            this.visibleData = this.data.filter(person => {
+            this.visibleData = this.employeesArray.filter(person => {
                if (person.name.toLowerCase().includes(searchedPerson.toLowerCase()))
                   return person
             });
          }
          else this.updateVisibleData();
+      },
 
+      clearInput(){
+         this.searchInput = '';
+         this.updateVisibleData();
       },
 
       changePage(page) {
-         const pageIndex = page;
-         this.currentPage = pageIndex;
+         const currentPageIndex = page;
+         this.currentPageIndex = currentPageIndex;
          this.updateVisibleData();
       },
       updatePage(size) {
-         this.pageSize = size;
-         this.currentPage = 0;
+         this.recordsPerPage = size;
+         this.currentPageIndex = 0;
          this.updateVisibleData();
       },
-      sortData() {
-         // const sortedTable = [...this.data];
-         // console.log(sortedTable)
-         this.data.sort((a, b) => {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-            if (nameA < nameB) {
-               return -1;
-            }
-            if (nameA > nameB) {
-               return 1;
-            }
-            return 0;
-         });
+
+      sortData(arg) {  //toggle do sortowania
+         const columnToSort = arg.toLowerCase();
+
+         if(this.sortAscending){
+            this.sortAsc(columnToSort);
+         }
+         else {
+           this.sortDesc(columnToSort);
+         }
          this.updateVisibleData();
-      }
+         this.sortAscending = !this.sortAscending;
+      },
+//brakuje sortowania daty********** pomyslec nad lepszym rozwiazaniem
+      sortAsc(arg) {
+            this.employeesArray.sort((a, b) => {
+               if(typeof a[arg] === 'string'){ 
+               const nameA = a[arg].toUpperCase();
+               const nameB = b[arg].toUpperCase();
+               if (nameA < nameB) {
+                  return -1;
+               }
+               if (nameA > nameB) {
+                  return 1;
+               }
+               return 0;}
+              else return a[arg]-b[arg];
+            });
+      },
+
+      sortDesc(arg) {
+            this.employeesArray.sort((a, b) => {
+               if(typeof a[arg] === 'string'){
+               const nameA = a.name.toUpperCase();
+               const nameB = b.name.toUpperCase();
+               if (nameA > nameB) {
+                  return -1;
+               }
+               if (nameA < nameB) {
+                  return 1;
+               }
+               return 0;
+            }
+            else return b[arg]-a[arg];
+         });
+         }
    }
 }
 
 </script>
 
 <style scoped>
-.container {
-   margin-right: auto;
-   margin-left: auto;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   border: 1px solid #333;
-}
-
 table th {
    position: relative;
    text-transform: uppercase;
@@ -135,19 +166,21 @@ span {
    top: 3px;
 }
 
-.input-row {
+.container {
+   margin-right: auto;
+   margin-left: auto;
    display: flex;
-   align-items: flex-start;
-   justify-content: space-between;
+   flex-direction: column;
+   justify-content: center;
+   border: 1px solid #333;
 }
 
-.input-row span {
-   font-weight: bold;
-   cursor: pointer;
+.search {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   row-gap: 10px;
 }
-
-.input-row input,
-span {
-   padding: 5px;
-}
+.search input {
+   padding: 5px;}
 </style>
