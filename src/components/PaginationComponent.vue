@@ -16,7 +16,7 @@
          <option value="12">12</option>
          <option value="15">15</option>
       </select>
-      <button type="submit" @click="changeTableSize">Update</button>
+      <base-button mode="basic" @click="changeTableSize">Update</base-button>
    </div>
 </template>
 
@@ -84,15 +84,6 @@ li {
 li:hover {
    color: purple;
    scale: 1.1;
-}
-
-button {
-   background: purple;
-   color: white;
-   padding: 5px 10px;
-   font-size: 1.2rem;
-   border: none;
-   border-radius: 0;
 }
 
 .active {
