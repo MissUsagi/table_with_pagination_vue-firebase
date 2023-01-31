@@ -85,22 +85,38 @@ export default {
          this.updateVisibleData();
       },
 
-      sortData(propertyName){
+      sortData(propertyName){ //asc desc -> solution i sortowanie daty
          const sortByProperty = propertyName.toLowerCase();
          const propComparator = (propName) =>
           (a, b) => 
-          {    
+          {  
             if(this.sortAscending)
             { 
-               return a[propName] === b[propName] ? 0 : a[propName] < b[propName] ? -1 : 1;
+               if (propName === "start_date")
+               //american date format mm/dd/yyyy
+               {
+                  const first = new Date(a.start_date);
+                  const second = new Date(b.start_date);
+                  return first === second ? 0 : first < second ? -1 : 1;
+               }
+               else return a[propName] === b[propName] ? 0 : a[propName] < b[propName] ? -1 : 1;
             }
-            else return a[propName] === b[propName] ? 0 : a[propName] > b[propName] ? -1 : 1; 
-        }
 
+            else if(!this.sortAscending) {
+               if (propName === "start_date")
+               {
+                  const first = new Date(a.start_date);
+                  const second = new Date(b.start_date);
+                  return first === second ? 0 : first > second ? -1 : 1;
+               }
+               return a[propName] === b[propName] ? 0 : a[propName] > b[propName] ? -1 : 1; 
+            }
+        }
          this.employeesArray.sort(propComparator(sortByProperty))
          this.updateVisibleData();
          this.sortAscending = !this.sortAscending; 
       }
+
    }
 }
 
