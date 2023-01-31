@@ -85,7 +85,7 @@ export default {
          this.updateVisibleData();
       },
 
-      sortData(propertyName){ //asc desc -> solution i sortowanie daty
+      sortData(propertyName){ //Taski -> asc desc toggle w templatce ->  sortowanie daty
          const sortByProperty = propertyName.toLowerCase();
          const propComparator = (propName) =>
           (a, b) => 
