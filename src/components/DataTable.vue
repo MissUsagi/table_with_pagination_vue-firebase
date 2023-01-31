@@ -1,26 +1,28 @@
 <template>
    <div class="container">
       <table>
-         <thead @click="filter">
+         <thead>
             <tr>
-               <th v-for="label in tableLabels" :key="label.accessor">{{ label.label }} 
-                  <base-button mode="outline" @click="sortData(label.accessor)">Sort</base-button ></th>
+               <th v-for="label in tableLabels" :key="label.accessor"><div class="label-row"><h3>{{ label.label }} </h3>
+                  <base-button mode="outline" @click="sortData(label.accessor)"> Sort 
+                  <!-- {{ sortAscending ? "Sort ▲" : "Sort ▼" }} -->
+               </base-button></div></th>
             </tr>
          </thead>
          <tbody>
             <tr>
                <td>
-                  <div class="search">
+                  <div class="search-row">
                   <input type="type" placeholder="Search Name" v-model="searchInput" @input="searchName($event)">
                   <base-button mode="basic" @click="clearInput()">Clear</base-button>
                </div>
                </td>
             </tr>
-            <tr v-for="row in visibleData" :key="row.id">
-               <td>{{ row.name }}</td>
-               <td>{{ row.age }}</td>
-               <td><span>{{ row.is_manager ? '✔️' : '✖️' }}</span> {{ row.is_manager }}</td>
-               <td>{{ row.start_date }}</td>
+            <tr v-for="person in visibleData" :key="person.id">
+               <td>{{ person.name }}</td>
+               <td>{{ person.age }}</td>
+               <td><span>{{ person.is_manager ? '✔️' : '✖️' }}</span> {{ person.is_manager }}</td>
+               <td>{{ person.start_date }}</td>
             </tr>
          </tbody>
       </table>
@@ -77,87 +79,67 @@ export default {
          this.currentPageIndex = currentPageIndex;
          this.updateVisibleData();
       },
-      updatePage(size) {
-         this.recordsPerPage = size;
+      updatePage(tableSize) {
+         this.recordsPerPage = tableSize;
          this.currentPageIndex = 0;
          this.updateVisibleData();
       },
 
-      sortData(arg) {  //toggle do sortowania
-         const columnToSort = arg.toLowerCase();
-
-         if(this.sortAscending){
-            this.sortAsc(columnToSort);
-         }
-         else {
-           this.sortDesc(columnToSort);
-         }
-         this.updateVisibleData();
-         this.sortAscending = !this.sortAscending;
-      },
-//brakuje sortowania daty********** pomyslec nad lepszym rozwiazaniem
-      sortAsc(arg) {
-            this.employeesArray.sort((a, b) => {
-               if(typeof a[arg] === 'string'){ 
-               const nameA = a[arg].toUpperCase();
-               const nameB = b[arg].toUpperCase();
-               if (nameA < nameB) {
-                  return -1;
-               }
-               if (nameA > nameB) {
-                  return 1;
-               }
-               return 0;}
-              else return a[arg]-b[arg];
-            });
-      },
-
-      sortDesc(arg) {
-            this.employeesArray.sort((a, b) => {
-               if(typeof a[arg] === 'string'){
-               const nameA = a.name.toUpperCase();
-               const nameB = b.name.toUpperCase();
-               if (nameA > nameB) {
-                  return -1;
-               }
-               if (nameA < nameB) {
-                  return 1;
-               }
-               return 0;
+      sortData(propertyName){
+         const sortByProperty = propertyName.toLowerCase();
+         const propComparator = (propName) =>
+          (a, b) => 
+          {    
+            if(this.sortAscending)
+            { 
+               return a[propName] === b[propName] ? 0 : a[propName] < b[propName] ? -1 : 1;
             }
-            else return b[arg]-a[arg];
-         });
-         }
+            else return a[propName] === b[propName] ? 0 : a[propName] > b[propName] ? -1 : 1; 
+        }
+
+         this.employeesArray.sort(propComparator(sortByProperty))
+         this.updateVisibleData();
+         this.sortAscending = !this.sortAscending; 
+      }
    }
 }
 
 </script>
 
-<style scoped>
-table th {
-   position: relative;
+<style scoped lang="scss">
+table {
+   th {
    text-transform: uppercase;
    text-align: left;
    background: #44475C;
    color: #FFF;
-   padding: 8px;
+   padding: 4px;
    min-width: 50px;
-}
+ }
 
-table td {
+ td {
    min-width: 250px;
    text-align: left;
    padding: 8px;
    /* border-right: 2px solid #7D82A8; */
 }
 
-table td:last-child {
+ td:last-child {
    border-right: none;
 }
 
-table tbody tr:nth-child(2n) td {
+ tbody tr:nth-child(2n) td {
    background: #D4D8F9;
 }
+.label-row {
+   padding: 5px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+}
+}
+
 
 span {
    /* position: absolute; */
@@ -167,20 +149,21 @@ span {
 }
 
 .container {
-   margin-right: auto;
-   margin-left: auto;
+   margin: 5px auto 10px auto;
+   padding: 0 0 15px 0;
    display: flex;
    flex-direction: column;
    justify-content: center;
    border: 1px solid #333;
 }
 
-.search {
+.search-row {
    display: flex;
    flex-direction: row;
    align-items: center;
    row-gap: 10px;
-}
-.search input {
-   padding: 5px;}
+   
+   input {
+   padding: 5px;
+} }
 </style>

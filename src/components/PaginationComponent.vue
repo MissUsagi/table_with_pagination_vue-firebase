@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 div .list {
    display: flex;
 }
@@ -98,14 +98,14 @@ li:hover {
    align-items: center;
    justify-content: center;
    
-}
-
-.page-size p {
+ p {
    font-size: 1.2rem;
 }
 
-.page-size select {
+ select {
    padding: 5px 10px;
 }
+}
+
 </style>
 
