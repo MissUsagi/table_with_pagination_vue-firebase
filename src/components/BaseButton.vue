@@ -1,39 +1,40 @@
 <template>
-   <button :class="mode"><slot></slot></button>
+  <button :class="mode"><slot></slot></button>
 </template>
 
 <script>
 export default {
-   props:{
-      mode:{
-         type: String,
-         required: false,
-         default: null
-      },
-   }
-
-}
+  props: {
+    mode: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+};
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 button {
-cursor: pointer;
-padding: 5px 15px;
-font-size: 1.1rem;
+   cursor: pointer;
+   padding: 5px 15px;
+   font-size: 1.1rem;
+
+   &:hover {
+      background: rgb(162, 162, 199);
+   }
+   &.basic {
+      color: white;
+      background-color: rgb(102, 68, 102);
+      border: none;
+   }
+   &.outline {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+   }
 }
 
-button:hover{
-   background: rgb(162, 162, 199);
-}
-.basic {
-color: white;
-background-color: rgb(102, 68, 102);
-border: none;
-}
-.outline {
-  background-color: transparent;
-  border: 1px solid white;
-  color: white
-}
+
 </style>
