@@ -10,11 +10,10 @@
       </ul>
    </div>
    <div class="page-size">
-      <p>Table size</p>
+      <p>Table size:</p>
       <select id="page_size" name="page_size" v-model="tableSize" @change="changeTableSize">
          <option value="2">2</option>
-         <option value="3">3</option>
-         <option value="5">5</option>
+         <option selected="selected" value="3">3</option>
          <option value="6">6</option>
          <option value="9">9</option>
          <option value="12">12</option>
@@ -38,18 +37,15 @@ export default {
       goToPage(page) {
          this.activePage = page;
          this.$emit("my-event", this.activePage);
-         // console.log("page " + page);
-         // console.log("currentPage " + this.currentPage);
-         // console.log("activePage " + this.activePage);
       },
-      goToNextPage() {console.log("size", this.tableSize);
-         const nextPage = this.currentPage + 1; //current Page i active Page? ujednolicenie?
+      goToNextPage() {
+         const nextPage = this.currentPage + 1; 
          if (nextPage < this.pages) {
             this.$emit("my-event", nextPage);
             this.activePage += 1;
          }
       },
-      goToPrevPage() {console.log(this.tableSize);
+      goToPrevPage() {
          const prevPage = this.currentPage - 1;
          if (prevPage >= 0) {
             this.$emit("my-event", prevPage);

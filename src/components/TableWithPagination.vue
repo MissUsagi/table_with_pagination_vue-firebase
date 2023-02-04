@@ -74,21 +74,15 @@ export default {
   },
   mounted: function () {
     this.updateVisibleData();
-    console.log(this.sortingOrder)
   },
   methods: {
     updateVisibleData() {
       this.pagesInTotal = Math.ceil(
         this.employeesArray.length / this.recordsPerPage
       );
-      const from = this.currentPageIndex * this.recordsPerPage;
-      const to = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
-      console.log(from)
-      console.log(to)
-
-      this.visibleData = this.employeesArray.slice(from, to);      
-      console.log(this.visibleData)
-
+      const sliceFrom = this.currentPageIndex * this.recordsPerPage;
+      const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
+      this.visibleData = this.employeesArray.slice(sliceFrom, sliceTo);      
     },
 
     search(inputValue, property) {
@@ -112,12 +106,10 @@ export default {
 
     changePage(page) {
       const currentPageIndex = page;
-      // console.log("curr page", currentPageIndex)
       this.currentPageIndex = currentPageIndex;
       this.updateVisibleData();
     },
     updatePage(tableSize) {
-      console.log(tableSize)
       this.recordsPerPage = tableSize;
       this.currentPageIndex = 0;
       this.updateVisibleData();
@@ -128,8 +120,6 @@ export default {
     },
 
     sortData(propertyName, sortingOrder) {
-      this.sortedValues = propertyName;
-      
       const propComparator = (propName) => (a, b) => {
         //sortowanie dat 
         if (propName === "startDate") {
@@ -139,8 +129,8 @@ export default {
             return first === second ? 0 : first < second ? -1 : 1;
           }
           else return first === second ? 0 : first > second ? -1 : 1;
-        } 
-        // koniec sortowania dat
+        }
+        //**** */   
         if (sortingOrder === "asc") {
           return a[propName] === b[propName]
             ? 0
@@ -148,7 +138,7 @@ export default {
               ? -1
               : 1;
         }
-        else if((sortingOrder === "desc")) {
+        else if ((sortingOrder === "desc")) {
           return a[propName] === b[propName]
             ? 0
             : a[propName] > b[propName]
