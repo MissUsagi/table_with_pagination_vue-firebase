@@ -7,20 +7,17 @@
             <div class="label-row">
               <h3>{{ label.label }}</h3>
               <div class="sort-section">
-                <span>Sort</span>
                 <base-button mode="outline" @click="sortData(label.accessor, 'asc')" :key="label.accesstor">
-                {{ "▲" }}
-              </base-button>
-              <base-button mode="outline" @click="sortData(label.accessor, 'desc')" :key="label.accesstor">
-                {{"▼" }}
-              </base-button>
+                  {{ "▲" }}
+                </base-button>
+                <base-button mode="outline" @click="sortData(label.accessor, 'desc')" :key="label.accesstor">
+                  {{ "▼" }}
+                </base-button>
               </div>
             </div>
           </th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
+        <tr class="search-row">
           <td>
             <search-component class="search-comp" @clearInput="updateVisibleData" @search-event="search($event, 'name')"
               my-placeholder="Search by name"></search-component>
@@ -30,59 +27,65 @@
               my-placeholder="Search by age"></search-component>
           </td>
           <td>
-            <search-component class="search-comp" @clearInput="updateVisibleData"
-              @search-event="search($event, 'isManager')" my-placeholder="Is a manager?"></search-component>
+            <div class="row search-comp">
+              <radio-button id-prop="manager" name-prop="isManager" :value-prop="true" label-prop="Managers"
+                @checkboxChange="search($event, 'isManager')"></radio-button>
+              <radio-button id-prop="notManager" name-prop="isManager" :value-prop="false" label-prop="Others"
+                @checkboxChange="search($event, 'isManager')"></radio-button>
+              <radio-button id-prop="clear" name-prop="isManager" :value-prop="null" label-prop="All Employees"
+                @checkboxChange="clearInput"></radio-button>
+            </div>
           </td>
           <td>
-            <search-component class="search-comp" @clearInput="updateVisibleData"
-              @search-event="search($event, 'startDate')" my-placeholder="Search by date"></search-component>
+            <div class="row search-comp">
+              <base-callendar @clearInput="updateVisibleData"
+                @select-date="search($event, 'startDate')"></base-callendar>
+              <base-button mode="basic" @click="clearInput">Clear</base-button>
+            </div>
           </td>
         </tr>
-        <tr v-for="person in visibleData" :key="person.id">
-          <td>{{ person.name }}</td>
-          <td>{{ person.age }}</td>
-          <td>
-            <span>{{ person.isManager ? "✔️" : "✖️" }}</span>
-            {{ person.isManager }}
-          </td>
-          <td>{{ person.startDate }}</td>
-        </tr>
+      </thead>
+      <tbody>
+        <show-employees :visible-data="visibleData"></show-employees>
       </tbody>
     </table>
     <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="changePage"
-      @update-table-size="updatePage"></pagination-component>
+      @update-table-size="updateTableSize"></pagination-component>
   </div>
 </template>
 
 
 <script>
-import BaseButton from "./BaseButton.vue";
+import BaseButton from './BaseButton.vue';
 import PaginationComponent from "./PaginationComponent.vue";
 import SearchComponent from "./SearchComponent.vue";
+import ShowEmployees from './ShowEmployees.vue';
 export default {
-  components: { PaginationComponent, BaseButton, SearchComponent },
+  components: { PaginationComponent, SearchComponent, ShowEmployees, BaseButton },
   props: ["tableLabels", "employees"],
   data() {
     return {
       employeesArray: this.employees,
-      recordsPerPage: 3,
+      pagesInTotal: null,
+      recordsPerPage: 9,
       currentPageIndex: 0,
       visibleData: [],
-      pagesInTotal: null,
-      searchInput: "",
     };
   },
   mounted: function () {
     this.updateVisibleData();
   },
   methods: {
-    updateVisibleData() {
-      this.pagesInTotal = Math.ceil(
-        this.employeesArray.length / this.recordsPerPage
-      );
+      calcNumberOfPages(inputArray) {
+      return this.pagesInTotal = Math.ceil(inputArray.length / this.recordsPerPage)
+    },
+    updateVisibleData(inputArray=this.employeesArray) {
+      this.calcNumberOfPages(inputArray);
       const sliceFrom = this.currentPageIndex * this.recordsPerPage;
       const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
-      this.visibleData = this.employeesArray.slice(sliceFrom, sliceTo);      
+      this.visibleData = inputArray.slice(sliceFrom, sliceTo);
+      // console.log(`Slice from ${sliceFrom} Slice to ${sliceTo} Recordsperpage ${this.recordsPerPage}`)
+      // console.log(inputArray.length)
     },
 
     search(inputValue, property) {
@@ -97,26 +100,22 @@ export default {
             return person;
         });
       }
+      this.calcNumberOfPages(this.visibleData)
+      // this.updateVisibleData(this.visibleData)
     },
-
     clearInput() {
       this.searchInput = "";
       this.updateVisibleData();
     },
-
     changePage(page) {
-      const currentPageIndex = page;
-      this.currentPageIndex = currentPageIndex;
+      const newPageIndex = page;
+      this.currentPageIndex = newPageIndex;
       this.updateVisibleData();
     },
-    updatePage(tableSize) {
+    updateTableSize(tableSize) {
       this.recordsPerPage = tableSize;
       this.currentPageIndex = 0;
       this.updateVisibleData();
-    },
-
-    sortingOrderToggle(){
-      return this.sortingOrder === "asc" ? this.sortingOrder = "desc" : this.sortingOrder = "asc"
     },
 
     sortData(propertyName, sortingOrder) {
@@ -131,6 +130,7 @@ export default {
           else return first === second ? 0 : first > second ? -1 : 1;
         }
         //**** */   
+
         if (sortingOrder === "asc") {
           return a[propName] === b[propName]
             ? 0
@@ -148,7 +148,6 @@ export default {
       }
       this.employeesArray.sort(propComparator(propertyName));
       this.updateVisibleData();
-      this.sortingOrderToggle();
     }
   }
 };
@@ -172,14 +171,6 @@ table {
     /* border-right: 2px solid #7D82A8; */
   }
 
-  td:last-child {
-    border-right: none;
-  }
-
-  tbody tr:nth-child(2n) td {
-    background: #d4d8f9;
-  }
-
   .label-row {
     padding: 5px;
     display: flex;
@@ -187,8 +178,11 @@ table {
     align-items: center;
     justify-content: space-between;
   }
-}
 
+  .search-row {
+    background-color: #83e0b8;
+  }
+}
 
 .container {
   margin: 5px auto 10px auto;
@@ -204,22 +198,21 @@ table {
   align-items: center;
   justify-content: center;
 }
-button{
-  &:hover {
-    background: rgb(109, 73, 104);
-    scale: 1.05;
-  }
-  &:focus{ 
-    background: rgb(8, 189, 68);
-    color: lavender;
-  }
-}
-  .sort-section {
-    display: flex;
-    align-items: center;
-    span {    
-    font-size: 1.3rem;
-    margin-right: 15px;
+
+.sort-section {
+  display: flex;
+  align-items: center;
+
+  button {
+    &:hover {
+      background: rgb(109, 73, 104) !important;
+      scale: 1.05;
+    }
+
+    &:focus {
+      background: rgb(8, 189, 68) !important;
+      color: lavender;
     }
   }
+}
 </style>

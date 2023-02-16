@@ -49,4 +49,17 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+input {
+    padding: 5px;
+  }
+  
+.row {
+   display: flex;
+   align-items: center;
+   text-align: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
 </style>

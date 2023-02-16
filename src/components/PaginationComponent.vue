@@ -1,25 +1,23 @@
 <template>
    <div class="list">
       <ul>
-         <li @click="goToPrevPage()">[Previous]</li>
+         <li @click="goToPrevPage()">&#5130;</li>
          <li v-for="(page, index) in pages" :key="page" @click="goToPage(index)"
             :class="{ active: activePage === index }">
             [{{ page }}]
          </li>
-         <li @click="goToNextPage()">[Next]</li>
+         <li @click="goToNextPage()">&#5125;</li>
       </ul>
    </div>
    <div class="page-size">
       <p>Table size:</p>
       <select id="page_size" name="page_size" v-model="tableSize" @change="changeTableSize">
-         <option value="2">2</option>
          <option selected="selected" value="3">3</option>
          <option value="6">6</option>
          <option value="9">9</option>
          <option value="12">12</option>
          <option value="15">15</option>
       </select>
-      <!-- <base-button mode="basic" @click="changeTableSize">Update</base-button> -->
    </div>
 </template>
 
@@ -30,7 +28,7 @@ export default {
    data() {
       return {
          activePage: this.currentPage,
-         tableSize: null,
+         tableSize: 9,
       };
    },
    methods: {
@@ -71,6 +69,7 @@ ul {
    padding: 0.7rem 0;
    display: flex;
    flex-direction: row;
+   align-items: center;
 }
 
 li {

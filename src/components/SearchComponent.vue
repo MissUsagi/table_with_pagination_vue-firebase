@@ -1,5 +1,5 @@
 <template>
-  <div class="search-row">
+  <div class="row">
     <input
       type="text"
       :placeholder="myPlaceholder"
@@ -33,14 +33,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.search-row {
+.row {
   margin: 0 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   row-gap: 10px;
-  input {
-    padding: 5px;
-  }
 }
 </style>
