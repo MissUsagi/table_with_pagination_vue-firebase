@@ -1,12 +1,12 @@
 <template>
-  <div class="row">
+  <div class="input-row">
     <input
       type="text"
       :placeholder="myPlaceholder"
       v-model="searchedValue"
       @input="searchEvent($event)"
     />
-    <base-button mode="basic" @click="clearInput">Clear</base-button>
+    <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.row {
+.input-row {
   margin: 0 10px;
   display: flex;
   flex-direction: row;

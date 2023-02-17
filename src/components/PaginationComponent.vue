@@ -97,11 +97,11 @@ li:hover {
    justify-content: center;
 
    p {
-      font-size: 1.2rem;
+      font-size: 1rem;
    }
 
    select {
-      padding: 5px 10px;
+      padding: 2px 3px;
    }
 }
 </style>

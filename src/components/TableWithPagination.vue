@@ -7,11 +7,11 @@
             <div class="label-row">
               <h3>{{ label.label }}</h3>
               <div class="sort-section">
-                <base-button mode="outline" @click="sortData(label.accessor, 'asc')" :key="label.accesstor">
-                  {{ "▲" }}
+                <base-button mode="outline" @click="sortData(label.accessor, 'asc')" :key="label.accesstor"
+                  btn-txt="&#9650;">
                 </base-button>
-                <base-button mode="outline" @click="sortData(label.accessor, 'desc')" :key="label.accesstor">
-                  {{ "▼" }}
+                <base-button mode="outline" @click="sortData(label.accessor, 'desc')" :key="label.accesstor"
+                  btn-txt="&#9660;">
                 </base-button>
               </div>
             </div>
@@ -33,14 +33,13 @@
               <radio-button id-prop="notManager" name-prop="isManager" :value-prop="false" label-prop="Others"
                 @checkboxChange="search($event, 'isManager')"></radio-button>
               <radio-button id-prop="clear" name-prop="isManager" :value-prop="null" label-prop="All Employees"
-                @checkboxChange="clearInput"></radio-button>
+                checked="checked" @checkboxChange="clearInput"></radio-button>
             </div>
           </td>
           <td>
             <div class="row search-comp">
-              <base-callendar @clearInput="updateVisibleData"
-                @select-date="search($event, 'startDate')"></base-callendar>
-              <base-button mode="basic" @click="clearInput">Clear</base-button>
+              <base-callendar @clearInput="updateVisibleData" @select-date="search($event, 'startDate')"></base-callendar>
+              <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
             </div>
           </td>
         </tr>
@@ -49,9 +48,9 @@
         <show-employees :visible-data="visibleData"></show-employees>
       </tbody>
     </table>
-    <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="changePage"
-      @update-table-size="updateTableSize"></pagination-component>
-  </div>
+    <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="goToPage"
+      @update-table-size="changeTableSize"></pagination-component>
+</div>
 </template>
 
 
@@ -70,27 +69,42 @@ export default {
       recordsPerPage: 9,
       currentPageIndex: 0,
       visibleData: [],
+      searchResult: [],
+      searchOn: false,
     };
   },
   mounted: function () {
     this.updateVisibleData();
   },
+
   methods: {
-      calcNumberOfPages(inputArray) {
+    calcNumberOfPages(inputArray) {
       return this.pagesInTotal = Math.ceil(inputArray.length / this.recordsPerPage)
     },
-    updateVisibleData(inputArray=this.employeesArray) {
+
+    updateVisibleData(inputArray = this.employeesArray) {
       this.calcNumberOfPages(inputArray);
       const sliceFrom = this.currentPageIndex * this.recordsPerPage;
       const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
       this.visibleData = inputArray.slice(sliceFrom, sliceTo);
-      // console.log(`Slice from ${sliceFrom} Slice to ${sliceTo} Recordsperpage ${this.recordsPerPage}`)
-      // console.log(inputArray.length)
+    },
+
+    goToPage(page) {
+      const newPageIndex = page;
+      this.currentPageIndex = newPageIndex;
+      this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
+    },
+
+    changeTableSize(tableSize) {
+      this.recordsPerPage = tableSize;
+      this.currentPageIndex = 0;
+      this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
     },
 
     search(inputValue, property) {
+      this.searchOn = true;
       if (inputValue) {
-        this.visibleData = this.employeesArray.filter((person) => {
+        this.searchResult = this.employeesArray.filter((person) => {
           if (
             person[property]
               .toString()
@@ -100,51 +114,28 @@ export default {
             return person;
         });
       }
-      this.calcNumberOfPages(this.visibleData)
-      // this.updateVisibleData(this.visibleData)
+      this.calcNumberOfPages(this.searchResult)
+      this.updateVisibleData(this.searchResult)
     },
+
     clearInput() {
-      this.searchInput = "";
-      this.updateVisibleData();
-    },
-    changePage(page) {
-      const newPageIndex = page;
-      this.currentPageIndex = newPageIndex;
-      this.updateVisibleData();
-    },
-    updateTableSize(tableSize) {
-      this.recordsPerPage = tableSize;
-      this.currentPageIndex = 0;
+      this.searchOn = false;
       this.updateVisibleData();
     },
 
     sortData(propertyName, sortingOrder) {
       const propComparator = (propName) => (a, b) => {
-        //sortowanie dat 
+        let first = a[propName];
+        let second = b[propName];
+
         if (propName === "startDate") {
-          const first = new Date(a.startDate);
-          const second = new Date(b.startDate);
-          if (sortingOrder === "asc") {
-            return first === second ? 0 : first < second ? -1 : 1;
-          }
-          else return first === second ? 0 : first > second ? -1 : 1;
+          first = new Date(a.startDate);
+          second = new Date(b.startDate);
         }
-        //**** */   
 
         if (sortingOrder === "asc") {
-          return a[propName] === b[propName]
-            ? 0
-            : a[propName] < b[propName]
-              ? -1
-              : 1;
-        }
-        else if ((sortingOrder === "desc")) {
-          return a[propName] === b[propName]
-            ? 0
-            : a[propName] > b[propName]
-              ? -1
-              : 1;
-        }
+          return first < second ? -1 : 1;
+        } else return first > second ? -1 : 1;
       }
       this.employeesArray.sort(propComparator(propertyName));
       this.updateVisibleData();
@@ -168,7 +159,6 @@ table {
     min-width: 250px;
     text-align: left;
     padding: 8px;
-    /* border-right: 2px solid #7D82A8; */
   }
 
   .label-row {

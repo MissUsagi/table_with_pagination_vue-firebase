@@ -1,6 +1,6 @@
 <template>
       <label :for="idProp">
-   <input type="radio" :id="idProp" :name="nameProp" :value="valueProp" @change="$emit('checkboxChange', $event.target.value)">
+   <input type="radio" :id="idProp" :name="nameProp" :value="valueProp" checked="" @change="$emit('checkboxChange', $event.target.value)">
    {{ labelProp }}
 </label>
 </template>
@@ -9,7 +9,6 @@
 export default {
    props: ['idProp', 'nameProp', 'valueProp', 'labelProp']
 }
-
 </script>
 
 <style scoped lang="scss">
