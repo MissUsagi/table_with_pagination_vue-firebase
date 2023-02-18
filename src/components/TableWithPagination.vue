@@ -19,11 +19,11 @@
         </tr>
         <tr class="search-row">
           <td>
-            <search-component class="search-comp" @clearInput="updateVisibleData" @search-event="search($event, 'name')"
+            <search-component class="search-comp" @clear-input="clearInput" @search-event="search($event, 'name')"
               my-placeholder="Search by name"></search-component>
           </td>
           <td>
-            <search-component class="search-comp" @clearInput="updateVisibleData" @search-event="search($event, 'age')"
+            <search-component class="search-comp" @clear-input="clearInput" @search-event="search($event, 'age')"
               my-placeholder="Search by age"></search-component>
           </td>
           <td>
@@ -33,12 +33,12 @@
               <radio-button id-prop="notManager" name-prop="isManager" :value-prop="false" label-prop="Others"
                 @checkboxChange="search($event, 'isManager')"></radio-button>
               <radio-button id-prop="clear" name-prop="isManager" :value-prop="null" label-prop="All Employees"
-                checked="checked" @checkboxChange="clearInput"></radio-button>
+                 @checkboxChange="clearInput"></radio-button>
             </div>
           </td>
           <td>
             <div class="row search-comp">
-              <base-callendar @clearInput="updateVisibleData" @select-date="search($event, 'startDate')"></base-callendar>
+              <base-callendar @select-date="search($event, 'startDate')"></base-callendar>
               <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
             </div>
           </td>
@@ -66,7 +66,7 @@ export default {
     return {
       employeesArray: this.employees,
       pagesInTotal: null,
-      recordsPerPage: 9,
+      recordsPerPage: 6,
       currentPageIndex: 0,
       visibleData: [],
       searchResult: [],
@@ -87,6 +87,7 @@ export default {
       const sliceFrom = this.currentPageIndex * this.recordsPerPage;
       const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
       this.visibleData = inputArray.slice(sliceFrom, sliceTo);
+
     },
 
     goToPage(page) {
@@ -121,6 +122,7 @@ export default {
     clearInput() {
       this.searchOn = false;
       this.updateVisibleData();
+      this.goToPage(0);
     },
 
     sortData(propertyName, sortingOrder) {

@@ -91,6 +91,6 @@ const employeesData = [
       isManager: true,
       startDate: "03-10-2018",
    },
-]
+];
 
 export default employeesData;
