@@ -7,15 +7,16 @@
             <div class="label-row">
               <h3>{{ label.label }}</h3>
               <div class="sort-section">
-                <base-button mode="outline" @click="sortData(label.accessor, 'asc')" :key="label.accesstor"
+                <base-button mode="outline light" @click="sortData(label.accessor, 'asc')" :key="label.accesstor"
                   btn-txt="&#9650;">
                 </base-button>
-                <base-button mode="outline" @click="sortData(label.accessor, 'desc')" :key="label.accesstor"
+                <base-button mode="outline light" @click="sortData(label.accessor, 'desc')" :key="label.accesstor"
                   btn-txt="&#9660;">
                 </base-button>
               </div>
             </div>
           </th>
+          <th class="actions"></th>
         </tr>
         <tr class="search-row">
           <td>
@@ -38,10 +39,11 @@
           </td>
           <td>
             <div class="row search-comp">
-              <base-callendar @select-date="search($event, 'startDate')"></base-callendar>
+              <base-calendar @select-date="search($event, 'startDate')"></base-calendar>
               <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
             </div>
           </td>
+          <td></td>
         </tr>
       </thead>
       <tbody>
@@ -93,13 +95,15 @@ export default {
     goToPage(page) {
       const newPageIndex = page;
       this.currentPageIndex = newPageIndex;
-      this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
+      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
+      this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
     },
 
     changeTableSize(tableSize) {
       this.recordsPerPage = tableSize;
       this.currentPageIndex = 0;
-      this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
+      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
+      this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
     },
 
     search(inputValue, property) {
@@ -151,17 +155,21 @@ table {
   th {
     text-transform: uppercase;
     text-align: left;
-    background: #44475c;
-    color: #fff;
+    background: var(--primary-color);
+    color:  var(--base-white);
     padding: 4px;
-    min-width: 50px;
+    // min-width: 50px;
   }
 
   td {
-    min-width: 250px;
     text-align: left;
+    flex-basis: content;
     padding: 8px;
+    min-width: fit-content;
   }
+  // .actions{
+  //   text-align: auto;
+  // }
 
   .label-row {
     padding: 5px;
@@ -172,7 +180,7 @@ table {
   }
 
   .search-row {
-    background-color: #83e0b8;
+    background-color: var(--mint-green)
   }
 }
 
@@ -182,7 +190,6 @@ table {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid #333;
 }
 
 .search-comp {
@@ -196,14 +203,9 @@ table {
   align-items: center;
 
   button {
-    &:hover {
-      background: rgb(109, 73, 104) !important;
-      scale: 1.05;
-    }
-
     &:focus {
-      background: rgb(8, 189, 68) !important;
-      color: lavender;
+      background: var(--complementary);
+      color: var(--base-white);
     }
   }
 }

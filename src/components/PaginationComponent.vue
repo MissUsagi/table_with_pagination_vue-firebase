@@ -56,6 +56,7 @@ export default {
          this.activePage = 0;
       },
    },
+
 };
 </script>
 
@@ -80,13 +81,13 @@ li {
 }
 
 li:hover {
-   color: purple;
+   color: var(--purple);
    scale: 1.1;
 }
 
 .active {
    font-weight: bold;
-   color: purple;
+   color: var(--purple);
 }
 
 .page-size {

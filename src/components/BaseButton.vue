@@ -1,4 +1,6 @@
-<template><button class="btn" :class="mode">{{ btnTxt }}</button></template>
+<template>
+  <button class="btn" :class="mode">{{ btnTxt }}<slot></slot></button>
+</template>
 
 <script>
 export default {
@@ -7,9 +9,10 @@ export default {
       type: String,
       required: false,
       default: null,
-    }, btnTxt: {
-      type: String
-    }
+    },
+    btnTxt: {
+      type: String,
+    },
   },
 };
 </script>
@@ -17,32 +20,72 @@ export default {
 
 <style scoped lang="scss">
 .btn {
+  --red: #d02620;
+  --violet: #c18ffd;
   cursor: pointer;
   padding: 5px 15px;
   font-size: 1.1rem;
 
   &:hover {
-    background: rgb(162, 162, 199);
+    background: var(--light-purple);
+  }
+
+  &.rounded {
+    border-radius: 5px;
   }
 
   &.basic {
-    color: white;
-    background-color: rgb(102, 68, 102);
+    color: var(--base-white);
+    background-color: var(--dark-purple);
     border: none;
 
     &:hover {
-      background: rgb(162, 162, 199);
+      background: var(--complementary);
     }
   }
 
   &.outline {
     background-color: transparent;
-    border: 1px solid white;
-    color: white;
+    border: 1px solid var(--base-white);
+    color: var(--base-white);
 
     &:hover {
-      background: rgb(156, 202, 138);
+      background: rgb(109, 73, 104);
+      scale: 1.05;
     }
   }
-}
-</style>
+
+  &.no-outline {
+    background: none;
+    border: none;
+    border-radius: 3px;
+  }
+
+  &:hover {
+    background-color: var(--violet);
+    color: white;
+  }
+
+  &.warning {
+    background-color: var(--red);
+
+    &:hover {
+      background-color: var(--primary-color);
+    }
+  }
+
+  &.success {
+    background-color: var(--sea-green);
+
+    &:hover {
+      background-color: var(--primary-color);
+    }
+  }
+
+  &.transparent {
+    opacity: 0.8;
+  }
+}</style>
+
+
+
