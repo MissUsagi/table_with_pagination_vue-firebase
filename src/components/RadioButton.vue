@@ -52,7 +52,7 @@ label {
       background-color: var(--base-white);
       width: 24px;
       height: 24px;
-      box-shadow: inset 0 0 0 2px var(--purple);
+      box-shadow: inset 0 0 0 3px var(--purple);
       border-radius: 50%;
       margin-right: 10px;
       transition: 0.25s ease;

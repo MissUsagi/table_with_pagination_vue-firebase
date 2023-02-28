@@ -25,6 +25,7 @@ export default {
   cursor: pointer;
   padding: 5px 15px;
   font-size: 1.1rem;
+  transition: all 0.5s ease;
 
   &:hover {
     background: var(--light-purple);
@@ -48,6 +49,7 @@ export default {
     background-color: transparent;
     border: 1px solid var(--base-white);
     color: var(--base-white);
+
 
     &:hover {
       background: rgb(109, 73, 104);

@@ -14,13 +14,15 @@
           </div>
           </td>
         </tr>
-        <base-alert v-if="alertVisibility" :warningTxt="alertMsg" caseOne="Yes" caseTwo="No" :valueTrue="true" :valueFalse="false" @alert-response="deleteConfirmation($event)"></base-alert>
+        <base-alertbox v-if="alertVisibility" :warningTxt="alertMsg" caseOne="Yes" caseTwo="No" :valueTrue="true" :valueFalse="false" @alert-response="deleteConfirmation($event)"></base-alertbox>
+        <edit-component></edit-component>
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue'
+import BaseButton from './BaseButton.vue';
+import EditComponent from './EditComponent.vue'
 export default {
-  components: { BaseButton },
+  components: { BaseButton, EditComponent },
    props: ['visibleData'],
    data() {
     return {   
