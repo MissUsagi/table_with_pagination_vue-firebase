@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 :root{
 --base-white: white;
 --mint-green:  #83e0b8;
@@ -102,4 +102,5 @@ input {
   border-radius: 7px;
   border: 1px solid rgba(255, 255, 255, 0.336);
 }
+
 </style>

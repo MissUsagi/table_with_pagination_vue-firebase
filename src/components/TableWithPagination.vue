@@ -151,6 +151,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+@mixin flexCenter($direction){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+}
+
 table {
   th {
     text-transform: uppercase;
@@ -167,10 +175,6 @@ table {
     padding: 8px;
     min-width: fit-content;
   }
-  // .actions{
-  //   text-align: auto;
-  // }
-
   .label-row {
     padding: 5px;
     display: flex;
@@ -193,9 +197,7 @@ table {
 }
 
 .search-comp {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flexCenter(row);
 }
 
 .sort-section {

@@ -9,13 +9,13 @@
           <td>{{ person.startDate }}</td>
           <td>
             <div class="options">
-            <base-button class="m-2" mode="no-outline"><img src="../../public/images/edit.png" alt="Edit"></base-button>
+            <base-button class="m-2" mode="no-outline" @click="editData(person)"><img src="../../public/images/edit.png" alt="Edit"></base-button>
             <base-button class="m-2" mode="no-outline" @click="showAlert(person)"><img src="../../public/images/bin.png" alt="Delete"></base-button>
           </div>
           </td>
         </tr>
         <base-alertbox v-if="alertVisibility" :warningTxt="alertMsg" caseOne="Yes" caseTwo="No" :valueTrue="true" :valueFalse="false" @alert-response="deleteConfirmation($event)"></base-alertbox>
-        <edit-component></edit-component>
+        <edit-component v-if="editFormVisibility" :employee="dataToEdit" @edit-employee-details="editEmployeeDetails($event)"></edit-component>
 </template>
 
 <script>
@@ -28,7 +28,9 @@ export default {
     return {   
       alertMsg: 'Are you sure?',
       alertVisibility: false,
+      editFormVisibility: false,
       dataToRemove: {},
+      dataToEdit: {}
     }
    },
    methods: {
@@ -48,12 +50,21 @@ export default {
       console.log(this.dataToRemove);
       // this.alertMsg = `Data deleted successfully!`;
       //ZAPYTANIE DO API
+    },
+    editData(person){
+      this.editFormVisibility = true;
+      this.dataToEdit = person;
+    },
+    editEmployeeDetails(e){
+      this.dataToEdit = e;
+      console.log(this.dataToEdit)
     }
    }
 }
 </script>
 
 <style scoped >
+
 .options{
 text-align: center;
 }

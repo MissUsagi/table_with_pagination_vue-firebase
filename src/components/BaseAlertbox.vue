@@ -38,13 +38,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$widthA: 500px;
 .alert-box {
-   --widthA: 500px;
    position: absolute;
-   width: var(--widthA);
-   height: calc(var(--widthA)/2);
+   width: $widthA;
+   height: $widthA / 2;
    top: 20%;
-   right: calc(50% - var(--widthA)/2);
+   right: calc(50% - #{$widthA} / 2);
    text-align: center;
    border-radius: 10px;
    color: var(--dark-grey);

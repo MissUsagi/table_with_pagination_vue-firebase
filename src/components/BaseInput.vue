@@ -1,6 +1,6 @@
 <template>
    <div class="content">
-   <label id="idProp">{{ labelProp }}</label><input id="idProp" name="nameProp" type="text" :placeholder="placeholderProp" :value="valueProp">
+   <label id="idProp">{{ labelProp }}</label><input id="idProp" name="nameProp" type="text" :placeholder="valueProp" :value="valueProp" @input="$emit('updateValue', $event)">
    </div>
 </template>
 
@@ -8,13 +8,17 @@
 export default {
    props: {
       valueProp: {
-         type: String,
          required: true,
          default: null
       },
      labelProp: {
          type: String,
-         required: true,
+         required: false,
+         default: null
+      },
+      placeholderProp: {
+         type: String,
+         required: false,
          default: null
       }
    }
@@ -22,9 +26,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-*{
-   --labelWidth: 160px;
-}
+$labelWidth: 160px;
 .content{
    display: flex;
    flex-direction: row;
@@ -32,7 +34,7 @@ export default {
    // flex: 0 0 3em;
 }
 label{
-   width: var(--labelWidth);
+   width: $labelWidth;
    text-transform: uppercase;
    font-size: 1.1rem;
    font-weight: bold;
