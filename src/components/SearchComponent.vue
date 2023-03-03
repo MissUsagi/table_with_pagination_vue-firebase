@@ -1,12 +1,8 @@
 <template>
   <div class="input-row">
-    <input
-      type="text"
-      :placeholder="myPlaceholder"
-      v-model="searchedValue"
-      @input="searchEvent($event)"
-    />
-    <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
+    <div class="row">
+      <base-input mode="basic" placeholder-prop="Search by name" @update-input="searchEvent($event)"></base-input>
+      <base-button mode="basic" @click="clearInput" btn-txt="Cancel"></base-button></div>
   </div>
 </template>
 
@@ -14,19 +10,15 @@
 export default {
   props: ['updateVisibleData', 'myPlaceholder'],
   emits:['clear-input', 'search-event'],
-  data() {
-    return {
-      searchedValue: "",
-    };
-  },
   methods: {
     clearInput() {
       this.searchedValue = "";
       this.$emit("clear-input");
     },
     searchEvent(e){
-      this.searchedValue = e.target.value;
-      this.$emit("search-event", this.searchedValue)
+      let searchedValue = e;
+      // if(searchedValue.length >=2)
+      this.$emit("search-event", searchedValue)
     }
   },
 };

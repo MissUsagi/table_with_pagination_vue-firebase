@@ -58,11 +58,12 @@
 
 <script>
 import BaseButton from './BaseButton.vue';
+import BaseInput from './BaseInput.vue';
 import PaginationComponent from "./PaginationComponent.vue";
 import SearchComponent from "./SearchComponent.vue";
 import ShowEmployees from './ShowEmployees.vue';
 export default {
-  components: { PaginationComponent, SearchComponent, ShowEmployees, BaseButton },
+  components: { PaginationComponent, SearchComponent, ShowEmployees, BaseButton, BaseInput },
   props: ["tableLabels", "employees"],
   data() {
     return {

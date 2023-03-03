@@ -2,24 +2,28 @@
   <div class="glass container">
     <div class="content">
       <base-input
+        mode="rounded"
         label-prop="Name"
         input-type="text"
         :value-prop="employee.name"
         @update-input="updateData($event, 'name')"
       ></base-input>
       <base-input
+      mode="rounded"
         label-prop="Age"
         input-type="number"
         :value-prop="employee.age"
         @update-input="updateData($event, 'age')"
       ></base-input>
       <base-input
+      mode="rounded"
         label-prop="Manager"
         input-type="text"
         :value-prop="employee.isManager"
         @update-input="updateData($event, 'isManager')"
       ></base-input>
       <base-input
+      mode="rounded"
         label-prop="Start date"
         input-type="text"
         :value-prop="employee.startDate"
@@ -35,6 +39,7 @@
       <base-button
         mode="outline warning rounded transparent-btn"
         btnTxt="Cancel"
+        @click="closeEditWindow"
       ></base-button>
     </div>
   </div>
@@ -45,6 +50,7 @@ import BaseInput from "./BaseInput.vue";
 export default {
   components: { BaseInput },
   props: ["employee"],
+  emits: ["save-changes"],
   data() {
     return {
       editedData: { ...this.employee },
@@ -55,9 +61,11 @@ export default {
       this.editedData[property] = event;
     },
     saveChanges() {
-      console.log(this.editedData);
       this.$emit("save-changes", this.editedData);
     },
+    closeEditWindow(){
+      this.$emit("close-window")
+    }
   },
 };
 </script>

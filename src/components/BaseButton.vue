@@ -23,8 +23,8 @@ export default {
   --red: #d02620;
   --violet: #c18ffd;
   cursor: pointer;
-  padding: 5px 15px;
-  font-size: 1.1rem;
+  padding: 8px 15px;
+  font-size: 1rem;
   transition: all 0.5s ease;
 
   &:hover {
