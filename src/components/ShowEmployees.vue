@@ -9,13 +9,13 @@
           <td>{{ person.startDate }}</td>
           <td>
             <div class="options">
-            <base-button class="m-2" mode="no-outline" @click="editData(person)"><img src="../../public/images/edit.png" alt="Edit"></base-button>
+            <base-button class="m-2" mode="no-outline" @click="showEditForm(person)"><img src="../../public/images/edit.png" alt="Edit"></base-button>
             <base-button class="m-2" mode="no-outline" @click="showAlert(person)"><img src="../../public/images/bin.png" alt="Delete"></base-button>
           </div>
           </td>
         </tr>
         <base-alertbox v-if="alertVisibility" :warningTxt="alertMsg" caseOne="Yes" caseTwo="No" :valueTrue="true" :valueFalse="false" @alert-response="deleteConfirmation($event)"></base-alertbox>
-        <edit-component v-if="editFormVisibility" :employee="dataToEdit" @edit-employee-details="editEmployeeDetails($event)"></edit-component>
+        <edit-component v-if="editFormVisibility" :employee="dataToEdit" @save-changes="editDetails($event)"></edit-component>
 </template>
 
 <script>
@@ -29,8 +29,6 @@ export default {
       alertMsg: 'Are you sure?',
       alertVisibility: false,
       editFormVisibility: false,
-      dataToRemove: {},
-      dataToEdit: {}
     }
    },
    methods: {
@@ -38,6 +36,10 @@ export default {
       this.alertVisibility = true;
       this.alertMsg = `Delete ${person.name} from the list?`;
       return this.dataToRemove = person;
+    },
+    showEditForm(person){
+      this.editFormVisibility = true;
+      this.dataToEdit = person;
     },
     deleteConfirmation(e){
       let userDecision = e.toLowerCase() === "yes" ? true : false;
@@ -51,13 +53,14 @@ export default {
       // this.alertMsg = `Data deleted successfully!`;
       //ZAPYTANIE DO API
     },
-    editData(person){
-      this.editFormVisibility = true;
-      this.dataToEdit = person;
-    },
-    editEmployeeDetails(e){
-      this.dataToEdit = e;
-      console.log(this.dataToEdit)
+
+    editDetails(e){
+      let dataToEdit = e;
+      this.visibleData.find((element, index) => {
+        if(dataToEdit.id === element.id)
+        return this.visibleData[index] = dataToEdit;
+      })
+      this.editFormVisibility = false;
     }
    }
 }
