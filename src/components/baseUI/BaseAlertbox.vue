@@ -3,8 +3,8 @@
       <h3>{{ warningTxt }}</h3>
       <div>
          <base-button @click="alertEmit($event)" :value="caseOne" :btnTxt="caseOne"
-            mode="outline success rounded transparent-btn"></base-button>
-         <base-button @click="alertEmit($event)" :value="caseTwo" :btnTxt="caseTwo" mode="outline warning rounded transparent-btn"></base-button>
+            mode="no-outline success rounded transparent-btn"></base-button>
+         <base-button @click="alertEmit($event)" :value="caseTwo" :btnTxt="caseTwo" mode="no-outline warning rounded transparent-btn"></base-button>
       </div>
    </div>
 </template>

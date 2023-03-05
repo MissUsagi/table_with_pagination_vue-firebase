@@ -23,3 +23,9 @@ export default {
    },
 }
 </script>
+
+<style scoped>
+input[type='date']{
+   padding: 8px 10px;
+}
+</style>

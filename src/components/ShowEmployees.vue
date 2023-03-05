@@ -36,10 +36,9 @@
 </template>
 
 <script>
-import BaseButton from "./BaseButton.vue";
 import EditComponent from "./EditComponent.vue";
 export default {
-  components: { BaseButton, EditComponent },
+  components: { EditComponent },
   props: ["visibleData"],
   data() {
     return {

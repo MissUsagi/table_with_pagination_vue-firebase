@@ -1,7 +1,7 @@
 <template>
   <div class="input-container">
     <label v-if="labelProp" :id="idProp">{{ labelProp }}</label>
-    <input
+    <input 
       :id="idProp"
       :type="inputType"
       :placeholder="placeholderProp"

@@ -46,9 +46,7 @@
 </template>
 
 <script>
-import BaseInput from "./BaseInput.vue";
 export default {
-  components: { BaseInput },
   props: ["employee"],
   emits: ["save-changes"],
   data() {

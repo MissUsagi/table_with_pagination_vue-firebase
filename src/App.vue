@@ -57,6 +57,7 @@ export default {
 --dark-grey: #333;
 --purple: purple;
 --complementary: #F0B207;
+--complementary-light: #fff8f5;
 }
 
 * {

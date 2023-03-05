@@ -16,7 +16,7 @@
               </div>
             </div>
           </th>
-          <th class="actions"></th>
+          <th class="actions"><div class="label-row"><h3>Actions</h3></div></th>
         </tr>
         <tr class="search-row">
           <td>
@@ -57,13 +57,11 @@
 
 
 <script>
-import BaseButton from './BaseButton.vue';
-import BaseInput from './BaseInput.vue';
 import PaginationComponent from "./PaginationComponent.vue";
 import SearchComponent from "./SearchComponent.vue";
 import ShowEmployees from './ShowEmployees.vue';
 export default {
-  components: { PaginationComponent, SearchComponent, ShowEmployees, BaseButton, BaseInput },
+  components: { PaginationComponent, SearchComponent, ShowEmployees },
   props: ["tableLabels", "employees"],
   data() {
     return {
