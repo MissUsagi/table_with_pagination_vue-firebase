@@ -94,14 +94,12 @@ export default {
     goToPage(page) {
       const newPageIndex = page;
       this.currentPageIndex = newPageIndex;
-      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
       this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
     },
 
     changeTableSize(tableSize) {
       this.recordsPerPage = tableSize;
       this.currentPageIndex = 0;
-      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
       this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
     },
 
