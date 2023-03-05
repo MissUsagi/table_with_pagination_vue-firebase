@@ -56,5 +56,6 @@ select{
    border-radius: 5px;
    outline-color: var(--complementary);
 }
+
 </style>
 

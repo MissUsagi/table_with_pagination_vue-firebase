@@ -25,8 +25,8 @@
       <base-input
       mode="rounded"
         label-prop="Start date"
-        input-type="text"
-        :value-prop="employee.startDate"
+        input-type="date"
+        :value-prop="employee.startDate.split('-').reverse().join('-')"
         @update-input="updateData($event, 'startDate')"
       ></base-input>
     </div>
@@ -57,6 +57,9 @@ export default {
   methods: {
     updateData(event, property) {
       this.editedData[property] = event;
+      if(property==="startDate"){
+        this.editedData[property] = event.split('-').reverse().join('-')
+      }
     },
     saveChanges() {
       this.$emit("save-changes", this.editedData);
