@@ -14,28 +14,14 @@
         <li @click="goToNextPage()">&#5125;</li>
       </ul>
     </div>
-    <div class="records-per-page">
-      <!-- <p>Records per page:</p> -->
-      <!-- <select
-        name="page_size"
-        v-model="tableSize"
-        @change="changeTableSize"
-      >
-        <option selected="selected" value="3">3</option>
-        <option value="6">6</option>
-        <option value="9">9</option>
-        <option value="12">12</option>
-        <option value="15">15</option>
-      </select> -->
+    <div class="select-input">
       <base-select-input labelProp="Records per page:" :selected="tableSize" name="page_size" :options="[3,6,9,12,15]" @select-option="changeTableSize($event)"></base-select-input>
     </div>
   </div>
 </template>
 
 <script>
-import BaseSelectInput from './baseUI/BaseSelectInput.vue';
 export default {
-  components: { BaseSelectInput },
   props: ["currentPage", "pages"],
   emits: ["my-event", "update-table-size"],
   data() {
@@ -115,7 +101,7 @@ div .pagination {
   color: var(--purple);
 }
 
-.records-per-page {
+.select-input {
   @include flexRow;
   padding: 10px;
   gap: 10px;
