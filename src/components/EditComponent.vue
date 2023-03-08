@@ -1,5 +1,5 @@
 <template>
-  <div class="glass container">
+  <div class="glass edit-container">
     <div class="content">
       <base-input
         mode="rounded"
@@ -76,7 +76,7 @@ $width: 600px;
 $height: 400px;
 $gap: 12px;
 
-.container {
+.edit-container {
   position: absolute;
   top: $width/3;
   left: calc(50% - #{$width}/ 2);

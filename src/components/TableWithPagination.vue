@@ -43,7 +43,7 @@
               <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
             </div>
           </td>
-          <td></td>
+          <td><div class="row"><base-button mode="basic" btn-txt="&#43; Add New" @click="openForm"></base-button></div></td>
         </tr>
       </thead>
       <tbody>
@@ -53,15 +53,23 @@
     <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="goToPage"
       @update-table-size="changeTableSize"></pagination-component>
 </div>
+<edit-component
+    v-if="showAddForm"
+    :employee="test"
+    @save-changes="addNewEmployee($event)"
+    @close-window="showAddForm = false"
+  ></edit-component>
 </template>
 
 
 <script>
+import BaseButton from './baseUI/BaseButton.vue';
 import PaginationComponent from "./PaginationComponent.vue";
 import SearchComponent from "./SearchComponent.vue";
 import ShowEmployees from './ShowEmployees.vue';
+import EditComponent from './EditComponent.vue';
 export default {
-  components: { PaginationComponent, SearchComponent, ShowEmployees },
+  components: { PaginationComponent, SearchComponent, ShowEmployees, BaseButton, EditComponent },
   props: ["tableLabels", "employees"],
   data() {
     return {
@@ -72,6 +80,8 @@ export default {
       visibleData: [],
       searchResult: [],
       searchOn: false,
+      showAddForm: false,
+      test: {name: '', age:'', isManager: '', startDate: ''}
     };
   },
   mounted: function () {
@@ -143,6 +153,13 @@ export default {
       }
       this.employeesArray.sort(propComparator(propertyName));
       this.updateVisibleData();
+    },
+
+    openForm(){
+      this.showAddForm = true;
+    },
+    addNewEmployee(e){
+      console.log(e)
     }
   }
 };
