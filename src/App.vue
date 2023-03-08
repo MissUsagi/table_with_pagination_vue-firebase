@@ -1,6 +1,9 @@
 <template>
-  <table-with-pagination v-if="!loadingData" :table-labels="tableLabels"
-    :employees="filteredData"></table-with-pagination>
+  <table-with-pagination
+    v-if="!loadingData"
+    :table-labels="tableLabels"
+    :employees="filteredData"
+  ></table-with-pagination>
 </template>
 
 <script>
@@ -25,13 +28,19 @@ export default {
     async getData() {
       const response = await fetch('https://paginacja-d6d06-default-rtdb.europe-west1.firebasedatabase.app/employees.json');
       const result = await response.json();
+      if(response.ok)
+      {
       this.employees = result;
       this.filterData();
       this.loadingData = false;
-      // console.log(this.filteredData)
-      //**************************** */
-      //DODAĆ OBSŁUGĘ BŁĘDÓW
+      }
+      else {
+        // throw new Error("Oops something went wrong :( Please try again later.");
+           window.alert('Oops something went wrong :( Please try again later.');
+           //DODAĆ STRONĘ/KOMPONENT Z KOMUNIKATEM O BŁĘDZIE
+        }
     },
+
     filterData() {
       return (this.filteredData = this.employees.filter((employee) => {
         if (employee.name) return employee;
@@ -45,19 +54,19 @@ export default {
 </script>
 
 <style lang="scss">
-:root{
---base-white: white;
---mint-green:  #83e0b8;
---sea-green: #07BEB8;
---primary-color:  #32373B;
---secondary-color: #d4d8f9;
---secondary-light: #f0f1fc;
---dark-purple: rgb(102, 68, 102);
---light-purple: #a2a2c7;
---dark-grey: #333;
---purple: purple;
---complementary: #F0B207;
---complementary-light: #fff8f5;
+:root {
+  --base-white: white;
+  --mint-green: #83e0b8;
+  --sea-green: #07beb8;
+  --primary-color: #32373b;
+  --secondary-color: #d4d8f9;
+  --secondary-light: #f0f1fc;
+  --dark-purple: rgb(102, 68, 102);
+  --light-purple: #a2a2c7;
+  --dark-grey: #333;
+  --purple: purple;
+  --complementary: #f0b207;
+  --complementary-light: #fff8f5;
 }
 
 * {
@@ -103,5 +112,4 @@ input {
   border-radius: 7px;
   border: 1px solid rgba(255, 255, 255, 0.336);
 }
-
 </style>

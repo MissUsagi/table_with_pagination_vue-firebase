@@ -66,7 +66,7 @@ label {
 }
 input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 8px 15px 8px 10px;
   border: none;
   box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.1);
   background: rgba($color: #fff, $alpha: 1);

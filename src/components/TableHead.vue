@@ -1,8 +1,5 @@
 <template>
-  <div class="container">
-    <table>
-      <thead>
-        <tr>
+           <tr>
           <th v-for="label in tableLabels" :key="label.accessor">
             <div class="label-row">
               <h3>{{ label.label }}</h3>
@@ -16,7 +13,7 @@
               </div>
             </div>
           </th>
-          <th><div class="label-row"><h3>Actions</h3></div></th>
+          <th class="actions"><div class="label-row"><h3>Actions</h3></div></th>
         </tr>
         <tr class="search-row">
           <td>
@@ -40,72 +37,24 @@
           <td>
             <div class="row search-comp">
               <base-calendar @select-date="search($event, 'startDate')"></base-calendar>
-              <base-button mode="basic" @click="clearInput" btn-txt="Clear"></base-button>
+              <base-button mode="basic" @click="clearInput" btn-txt="Cancel"></base-button>
             </div>
           </td>
           <td></td>
         </tr>
-      </thead>
-      <tbody>
-        <show-employees :visible-data="visibleData"></show-employees>
-      </tbody>
-    </table>
-    <pagination-component :current-Page="currentPageIndex" :pages="pagesInTotal" @my-event="goToPage"
-      @update-table-size="changeTableSize"></pagination-component>
-</div>
 </template>
 
-
 <script>
-import PaginationComponent from "./PaginationComponent.vue";
-import SearchComponent from "./SearchComponent.vue";
-import ShowEmployees from './ShowEmployees.vue';
 export default {
-  components: { PaginationComponent, SearchComponent, ShowEmployees },
-  props: ["tableLabels", "employees"],
-  data() {
+   props: ['tableLabels', 'employees'],
+   data() {
     return {
-      employeesArray: this.employees,
-      pagesInTotal: null,
-      recordsPerPage: 6,
-      currentPageIndex: 0,
-      visibleData: [],
-      searchResult: [],
       searchOn: false,
+      employeesArray: this.employees,
     };
   },
-  mounted: function () {
-    this.updateVisibleData();
-  },
-
   methods: {
-    calcNumberOfPages(inputArray) {
-      return this.pagesInTotal = Math.ceil(inputArray.length / this.recordsPerPage)
-    },
-
-    updateVisibleData(inputArray = this.employeesArray) {
-      this.calcNumberOfPages(inputArray);
-      const sliceFrom = this.currentPageIndex * this.recordsPerPage;
-      const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
-      this.visibleData = inputArray.slice(sliceFrom, sliceTo);
-
-    },
-
-    goToPage(page) {
-      const newPageIndex = page;
-      this.currentPageIndex = newPageIndex;
-      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
-      this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
-    },
-
-    changeTableSize(tableSize) {
-      this.recordsPerPage = tableSize;
-      this.currentPageIndex = 0;
-      // this.searchOn === true ? this.updateVisibleData(this.searchResult) : this.updateVisibleData();
-      this.updateVisibleData(this.searchOn ? this.searchResult : undefined)
-    },
-
-    search(inputValue, property) {
+       search(inputValue, property) {
       this.searchOn = true;
       if (inputValue) {
         this.searchResult = this.employeesArray.filter((person) => {
@@ -121,7 +70,6 @@ export default {
       this.calcNumberOfPages(this.searchResult)
       this.updateVisibleData(this.searchResult)
     },
-
     clearInput() {
       this.searchOn = false;
       this.updateVisibleData();
@@ -146,18 +94,10 @@ export default {
       this.updateVisibleData();
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
-
-@mixin flexCenter($direction){
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: $direction;
-}
-
 table {
   th {
     text-transform: uppercase;
@@ -167,15 +107,7 @@ table {
     padding: 4px;
     // min-width: 50px;
   }
-
-  td {
-    text-align: left;
-    flex-basis: content;
-    padding: 8px;
-    min-width: fit-content;
-  }
-
-  .label-row {
+.label-row {
     padding: 5px;
     display: flex;
     flex-direction: row;
@@ -186,18 +118,6 @@ table {
   .search-row {
     background-color: var(--mint-green)
   }
-}
-
-.container {
-  margin: 5px auto 10px auto;
-  padding: 0 0 15px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.search-comp {
-  @include flexCenter(row);
 }
 
 .sort-section {

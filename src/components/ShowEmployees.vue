@@ -74,10 +74,26 @@ export default {
       let dataToEdit = e;
       this.visibleData.find((element, index) => {
         if (dataToEdit.id === element.id)
-          return (this.visibleData[index] = dataToEdit);
+          // return (this.visibleData[index] = dataToEdit);
+          this.updateEmployeesData(dataToEdit, index);
       });
       this.editFormVisibility = false;
     },
+
+async updateEmployeesData(employee, index)
+{
+  const response = await fetch(`https://paginsacja-d6d06-default-rtdb.europe-west1.firebasedatabase.app/employees/${index}.json`, 
+  {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application.json",
+    },
+    body: JSON.stringify(employee)
+  });
+ await response.json();
+  // console.log(result);
+}
+
   },
 };
 </script>

@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       activePage: this.currentPage,
-      tableSize: 9,
+      tableSize: 6,
     };
   },
   methods: {
