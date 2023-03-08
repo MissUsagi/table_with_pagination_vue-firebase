@@ -48,7 +48,7 @@
 <script>
 export default {
   props: ["employee"],
-  emits: ["save-changes"],
+  emits: ["save-changes","close-window"],
   data() {
     return {
       editedData: { ...this.employee },

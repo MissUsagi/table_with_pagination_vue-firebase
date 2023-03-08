@@ -88,7 +88,6 @@ export default {
       const sliceFrom = this.currentPageIndex * this.recordsPerPage;
       const sliceTo = (this.currentPageIndex * this.recordsPerPage) + this.recordsPerPage;
       this.visibleData = inputArray.slice(sliceFrom, sliceTo);
-
     },
 
     goToPage(page) {
