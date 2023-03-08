@@ -40,6 +40,7 @@ import EditComponent from "./EditComponent.vue";
 export default {
   components: { EditComponent },
   props: ["visibleData"],
+  // emits: ['refresh-data'],
   data() {
     return {
       alertMsg: "Are you sure?",
@@ -70,30 +71,27 @@ export default {
     },
 
     editDetails(e) {
-      //just local changes for now
-      let dataToEdit = e;
-      this.visibleData.find((element, index) => {
-        if (dataToEdit.id === element.id)
-          // return (this.visibleData[index] = dataToEdit);
-          this.updateEmployeesData(dataToEdit, index);
-      });
+      const dataToEdit = e;
+      this.updateEmployeesData(dataToEdit, dataToEdit.id);
       this.editFormVisibility = false;
     },
 
-async updateEmployeesData(employee, index)
-{
-  const response = await fetch(`https://paginsacja-d6d06-default-rtdb.europe-west1.firebasedatabase.app/employees/${index}.json`, 
-  {
-    method: 'PUT',
-    headers: {
-      "Content-Type": "application.json",
+    async updateEmployeesData(employee, index) {
+      console.log(employee, index);
+      const response = await fetch(
+        `https://paginacja-d6d06-default-rtdb.europe-west1.firebasedatabase.app/employees/${index}.json`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application.json",
+          },
+          body: JSON.stringify(employee),
+        }
+      );
+      const result = response.json();
+      console.log(result);
+      document.location.reload(); //temporary - change into API request
     },
-    body: JSON.stringify(employee)
-  });
- await response.json();
-  // console.log(result);
-}
-
   },
 };
 </script>
